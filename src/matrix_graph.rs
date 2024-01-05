@@ -1,10 +1,11 @@
 //! `MatrixGraph<N, E, Ty, NullN, NullE, Ix>` is a graph datastructure backed by an adjacency matrix.
 
-use std::marker::PhantomData;
-use std::ops::{Index, IndexMut};
+use crate::collections::{vec, Vec};
+use core::marker::PhantomData;
+use core::ops::{Index, IndexMut};
 
-use std::cmp;
-use std::mem;
+use core::cmp;
+use core::mem;
 
 use indexmap::IndexSet;
 
@@ -904,7 +905,10 @@ fn ensure_len<T: Default>(v: &mut Vec<T>, size: usize) {
 struct IdStorage<T> {
     elements: Vec<Option<T>>,
     upper_bound: usize,
+    #[cfg(feature = "std")]
     removed_ids: IndexSet<usize>,
+    #[cfg(not(feature = "std"))]
+    removed_ids: IndexSet<usize, ahash::RandomState>,
 }
 
 impl<T> IdStorage<T> {
@@ -912,7 +916,10 @@ impl<T> IdStorage<T> {
         IdStorage {
             elements: Vec::with_capacity(capacity),
             upper_bound: 0,
+            #[cfg(feature = "std")]
             removed_ids: IndexSet::new(),
+            #[cfg(not(feature = "std"))]
+            removed_ids: IndexSet::with_hasher(ahash::RandomState::default()),
         }
     }
 
@@ -979,7 +986,10 @@ impl<T> IndexMut<usize> for IdStorage<T> {
 #[derive(Debug, Clone)]
 struct IdIterator<'a> {
     upper_bound: usize,
+    #[cfg(feature = "std")]
     removed_ids: &'a IndexSet<usize>,
+    #[cfg(not(feature = "std"))]
+    removed_ids: &'a IndexSet<usize, ahash::RandomState>,
     current: Option<usize>,
 }
 

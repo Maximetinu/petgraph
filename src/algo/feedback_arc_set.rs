@@ -1,7 +1,6 @@
-use std::{
-    collections::{HashMap, VecDeque},
-    ops::{Index, IndexMut},
-};
+use crate::collections::Vec;
+use crate::collections::{HashMap, VecDeque};
+use core::ops::{Index, IndexMut};
 
 use crate::{
     graph::{GraphIndex, NodeIndex},
@@ -329,7 +328,9 @@ impl Buckets {
 }
 
 mod linked_list {
-    use std::{marker::PhantomData, ops::IndexMut};
+    use crate::collections::Vec;
+
+    use core::{marker::PhantomData, ops::IndexMut};
 
     #[derive(PartialEq, Debug)]
     pub struct LinkedList<Data, Container, Ix> {

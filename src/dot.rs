@@ -1,6 +1,10 @@
 //! Simple graphviz dot file format output.
 
-use std::fmt::{self, Display, Write};
+#[cfg(not(feature = "std"))]
+use alloc::string::*;
+use core::fmt::{self, Display, Write};
+#[cfg(feature = "std")]
+use std::string::*;
 
 use crate::visit::{
     EdgeRef, GraphProp, IntoEdgeReferences, IntoNodeReferences, NodeIndexable, NodeRef,
@@ -281,7 +285,7 @@ mod test {
     use super::{Config, Dot, Escaper};
     use crate::prelude::Graph;
     use crate::visit::NodeRef;
-    use std::fmt::Write;
+    use core::fmt::Write;
 
     #[test]
     fn test_escape() {

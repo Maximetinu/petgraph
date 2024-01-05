@@ -1,5 +1,6 @@
 //! Graph traits for associated data and graph construction.
 
+use crate::collections::Vec;
 use crate::graph::IndexType;
 #[cfg(feature = "graphmap")]
 use crate::graphmap::{GraphMap, NodeTrait};

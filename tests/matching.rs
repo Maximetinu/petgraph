@@ -1,5 +1,5 @@
-use std::collections::HashSet;
-use std::hash::Hash;
+use core::hash::Hash;
+use petgraph::collections::HashSet;
 
 use petgraph::algo::{greedy_matching, maximum_matching};
 use petgraph::prelude::*;

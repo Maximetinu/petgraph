@@ -8,7 +8,7 @@ extern crate serde_json;
 #[macro_use]
 extern crate defmac;
 
-use std::collections::HashSet;
+use petgraph::collections::HashSet;
 use std::fmt::Debug;
 use std::iter::FromIterator;
 

@@ -5,7 +5,7 @@ extern crate petgraph;
 #[macro_use]
 extern crate defmac;
 
-use std::collections::HashSet;
+use petgraph::collections::HashSet;
 
 use itertools::assert_equal;
 use petgraph::algo::{kosaraju_scc, min_spanning_tree, tarjan_scc};

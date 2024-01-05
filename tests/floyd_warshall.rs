@@ -1,6 +1,6 @@
 use petgraph::algo::floyd_warshall;
+use petgraph::collections::HashMap;
 use petgraph::{prelude::*, Directed, Graph, Undirected};
-use std::collections::HashMap;
 
 #[test]
 fn floyd_warshall_uniform_weight() {

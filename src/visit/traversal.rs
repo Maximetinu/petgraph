@@ -1,7 +1,8 @@
 use super::{GraphRef, IntoNodeIdentifiers, Reversed};
 use super::{IntoNeighbors, IntoNeighborsDirected, VisitMap, Visitable};
+use crate::collections::Vec;
+use crate::collections::VecDeque;
 use crate::Incoming;
-use std::collections::VecDeque;
 
 /// Visit nodes of a graph in a depth-first-search (DFS) emitting nodes in
 /// preorder (when they are first discovered).

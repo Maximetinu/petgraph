@@ -1,5 +1,9 @@
-use std::collections::VecDeque;
-use std::hash::Hash;
+#[cfg(feature = "std")]
+use crate::collections::VecDeque;
+use crate::collections::{vec, Vec};
+#[cfg(not(feature = "std"))]
+use alloc::collections::VecDeque;
+use core::hash::Hash;
 
 use crate::visit::{
     EdgeRef, GraphBase, IntoEdges, IntoNeighbors, IntoNodeIdentifiers, NodeCount, NodeIndexable,
@@ -332,7 +336,7 @@ impl<G: GraphBase> PartialEq for Label<G> {
 /// *O(|V|³)*. An algorithm with a better time complexity might be used in the
 /// future.
 ///
-/// **Panics** if `g.node_bound()` is `std::usize::MAX`.
+/// **Panics** if `g.node_bound()` is `core::usize::MAX`.
 ///
 /// # Examples
 ///
@@ -372,8 +376,8 @@ where
     // The dummy identifier needs an unused index
     assert_ne!(
         graph.node_bound(),
-        std::usize::MAX,
-        "The input graph capacity should be strictly less than std::usize::MAX."
+        core::usize::MAX,
+        "The input graph capacity should be strictly less than core::usize::MAX."
     );
 
     // Greedy algorithm should create a fairly good initial matching. The hope
@@ -387,7 +391,7 @@ where
     debug_assert_eq!(mate.len(), len);
 
     let mut label: Vec<Label<G>> = vec![Label::None; len];
-    let mut first_inner = vec![std::usize::MAX; len];
+    let mut first_inner = vec![core::usize::MAX; len];
     let visited = &mut graph.visit_map();
 
     for start in 0..graph.node_bound() {
@@ -526,7 +530,7 @@ fn find_join<G, F>(
     let join = loop {
         // Swap the sides. Do not swap if the right side is already finished.
         if right != graph.dummy_idx() {
-            std::mem::swap(&mut left, &mut right);
+            core::mem::swap(&mut left, &mut right);
         }
 
         // Set left to the next inner vertex in P(source) or P(target).

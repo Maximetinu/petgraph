@@ -3,17 +3,18 @@
 //! Depends on `feature = "stable_graph"`.
 //!
 
-use std::cmp;
-use std::fmt;
-use std::iter;
-use std::marker::PhantomData;
-use std::mem::replace;
-use std::mem::size_of;
-use std::ops::{Index, IndexMut};
-use std::slice;
+use core::cmp;
+use core::fmt;
+use core::iter;
+use core::marker::PhantomData;
+use core::mem::replace;
+use core::mem::size_of;
+use core::ops::{Index, IndexMut};
+use core::slice;
 
 use fixedbitset::FixedBitSet;
 
+use crate::collections::vec;
 use crate::{Directed, Direction, EdgeType, Graph, Incoming, Outgoing, Undirected};
 
 use crate::iter_format::{DebugMap, IterFormatExt, NoPretty};

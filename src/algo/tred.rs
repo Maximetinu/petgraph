@@ -9,6 +9,7 @@
 //! The transitive reduction is well-defined for acyclic graphs only.
 
 use crate::adj::{List, UnweightedList};
+use crate::collections::{vec, Vec};
 use crate::graph::IndexType;
 use crate::visit::{
     GraphBase, IntoNeighbors, IntoNeighborsDirected, NodeCompactIndexable, NodeCount,

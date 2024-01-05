@@ -1,7 +1,8 @@
 use serde::de::Error;
 
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
+use crate::collections::Vec;
 use crate::prelude::*;
 
 use crate::graph::Node;

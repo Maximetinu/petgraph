@@ -1,7 +1,8 @@
-use std::collections::hash_map::Entry::{Occupied, Vacant};
-use std::collections::{BinaryHeap, HashMap};
+use crate::collections::hash_map::Entry::{Occupied, Vacant};
+use crate::collections::{vec, Vec};
+use crate::collections::{BinaryHeap, HashMap};
 
-use std::hash::Hash;
+use core::hash::Hash;
 
 use crate::scored::MinScored;
 use crate::visit::{EdgeRef, GraphBase, IntoEdges, Visitable};

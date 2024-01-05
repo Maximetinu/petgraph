@@ -1,19 +1,20 @@
 //! `GraphMap<N, E, Ty>` is a graph datastructure where node values are mapping
 //! keys.
-
+//!
+use crate::collections::HashSet;
+use crate::collections::Vec;
+use core::cmp::Ordering;
+use core::fmt;
+use core::hash::{self, Hash};
+use core::iter::FromIterator;
+use core::iter::{Cloned, DoubleEndedIterator};
+use core::marker::PhantomData;
+use core::mem;
+use core::ops::{Deref, Index, IndexMut};
+use core::slice::Iter;
 use indexmap::map::Keys;
 use indexmap::map::{Iter as IndexMapIter, IterMut as IndexMapIterMut};
 use indexmap::IndexMap;
-use std::cmp::Ordering;
-use std::collections::HashSet;
-use std::fmt;
-use std::hash::{self, Hash};
-use std::iter::FromIterator;
-use std::iter::{Cloned, DoubleEndedIterator};
-use std::marker::PhantomData;
-use std::mem;
-use std::ops::{Deref, Index, IndexMut};
-use std::slice::Iter;
 
 use crate::{Directed, Direction, EdgeType, Incoming, Outgoing, Undirected};
 
@@ -64,8 +65,14 @@ pub type DiGraphMap<N, E> = GraphMap<N, E, Directed>;
 /// Depends on crate feature `graphmap` (default).
 #[derive(Clone)]
 pub struct GraphMap<N, E, Ty> {
+    #[cfg(feature = "std")]
     nodes: IndexMap<N, Vec<(N, CompactDirection)>>,
+    #[cfg(not(feature = "std"))]
+    nodes: IndexMap<N, Vec<(N, CompactDirection)>, ahash::RandomState>,
+    #[cfg(feature = "std")]
     edges: IndexMap<(N, N), E>,
+    #[cfg(not(feature = "std"))]
+    edges: IndexMap<(N, N), E, ahash::RandomState>,
     ty: PhantomData<Ty>,
 }
 
@@ -179,8 +186,14 @@ where
     /// Create a new `GraphMap` with estimated capacity.
     pub fn with_capacity(nodes: usize, edges: usize) -> Self {
         GraphMap {
+            #[cfg(feature = "std")]
             nodes: IndexMap::with_capacity(nodes),
+            #[cfg(not(feature = "std"))]
+            nodes: IndexMap::with_capacity_and_hasher(nodes, ahash::RandomState::default()),
+            #[cfg(feature = "std")]
             edges: IndexMap::with_capacity(edges),
+            #[cfg(not(feature = "std"))]
+            edges: IndexMap::with_capacity_and_hasher(edges, ahash::RandomState::default()),
             ty: PhantomData,
         }
     }
@@ -708,7 +721,10 @@ where
     Ty: EdgeType,
 {
     from: N,
+    #[cfg(feature = "std")]
     edges: &'a IndexMap<(N, N), E>,
+    #[cfg(not(feature = "std"))]
+    edges: &'a IndexMap<(N, N), E, ahash::RandomState>,
     iter: Neighbors<'a, N, Ty>,
 }
 
@@ -741,7 +757,10 @@ where
 {
     from: N,
     dir: Direction,
+    #[cfg(feature = "std")]
     edges: &'a IndexMap<(N, N), E>,
+    #[cfg(not(feature = "std"))]
+    edges: &'a IndexMap<(N, N), E, ahash::RandomState>,
     iter: NeighborsDirected<'a, N, Ty>,
 }
 

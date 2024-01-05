@@ -13,9 +13,9 @@ mod utils;
 
 use utils::{Small, Tournament};
 
+use core::hash::Hash;
 use odds::prelude::*;
-use std::collections::HashSet;
-use std::hash::Hash;
+use petgraph::collections::HashSet;
 
 use itertools::assert_equal;
 use itertools::cloned;
@@ -50,7 +50,7 @@ where
     Graph::from_elements(min_spanning_tree(&g))
 }
 
-use std::fmt;
+use core::fmt;
 
 quickcheck! {
     fn mst_directed(g: Small<Graph<(), u32>>) -> bool {

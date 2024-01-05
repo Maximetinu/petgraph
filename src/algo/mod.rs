@@ -16,9 +16,15 @@ pub mod matching;
 pub mod simple_paths;
 pub mod tred;
 
-use std::collections::{BinaryHeap, HashMap};
-use std::num::NonZeroUsize;
+#[cfg(feature = "std")]
+use crate::collections::{BinaryHeap, HashMap};
+#[cfg(not(feature = "std"))]
+use alloc::collections::BinaryHeap;
+use core::num::NonZeroUsize;
+#[cfg(not(feature = "std"))]
+use hashbrown::HashMap;
 
+use crate::collections::{vec, Vec};
 use crate::prelude::*;
 
 use super::graph::IndexType;
@@ -366,8 +372,8 @@ impl<N> TarjanScc<N> {
     /// Creates a new `TarjanScc`
     pub fn new() -> Self {
         TarjanScc {
-            index: 1,                        // Invariant: index < componentcount at all times.
-            componentcount: std::usize::MAX, // Will hold if componentcount is initialized to number of nodes - 1 or higher.
+            index: 1,                         // Invariant: index < componentcount at all times.
+            componentcount: core::usize::MAX, // Will hold if componentcount is initialized to number of nodes - 1 or higher.
             nodes: Vec::new(),
             stack: Vec::new(),
         }
@@ -486,7 +492,7 @@ impl<N> TarjanScc<N> {
             rindex > self.componentcount,
             "Given node has been visited but not yet assigned to a component."
         );
-        std::usize::MAX - rindex
+        core::usize::MAX - rindex
     }
 }
 
@@ -767,14 +773,14 @@ pub struct NegativeCycle(pub ());
 pub fn is_bipartite_undirected<G, N, VM>(g: G, start: N) -> bool
 where
     G: GraphRef + Visitable<NodeId = N, Map = VM> + IntoNeighbors<NodeId = N>,
-    N: Copy + PartialEq + std::fmt::Debug,
+    N: Copy + PartialEq + core::fmt::Debug,
     VM: VisitMap<N>,
 {
     let mut red = g.visit_map();
     red.visit(start);
     let mut blue = g.visit_map();
 
-    let mut stack = ::std::collections::VecDeque::new();
+    let mut stack = crate::collections::VecDeque::new();
     stack.push_front(start);
 
     while let Some(node) = stack.pop_front() {
@@ -814,8 +820,8 @@ where
     true
 }
 
-use std::fmt::Debug;
-use std::ops::Add;
+use core::fmt::Debug;
+use core::ops::Add;
 
 /// Associated data that can be used for measures (such as length).
 pub trait Measure: Debug + PartialOrd + Add<Self, Output = Self> + Default + Clone {}
@@ -846,7 +852,7 @@ impl FloatMeasure for f64 {
     }
 }
 
-pub trait BoundedMeasure: Measure + std::ops::Sub<Self, Output = Self> {
+pub trait BoundedMeasure: Measure + core::ops::Sub<Self, Output = Self> {
     fn min() -> Self;
     fn max() -> Self;
     fn overflowing_add(self, rhs: Self) -> (Self, bool);
@@ -857,11 +863,11 @@ macro_rules! impl_bounded_measure_integer(
         $(
             impl BoundedMeasure for $t {
                 fn min() -> Self {
-                    std::$t::MIN
+                    core::$t::MIN
                 }
 
                 fn max() -> Self {
-                    std::$t::MAX
+                    core::$t::MAX
                 }
 
                 fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -879,19 +885,19 @@ macro_rules! impl_bounded_measure_float(
         $(
             impl BoundedMeasure for $t {
                 fn min() -> Self {
-                    std::$t::MIN
+                    core::$t::MIN
                 }
 
                 fn max() -> Self {
-                    std::$t::MAX
+                    core::$t::MAX
                 }
 
                 fn overflowing_add(self, rhs: Self) -> (Self, bool) {
                     // for an overflow: a + b > max: both values need to be positive and a > max - b must be satisfied
-                    let overflow = self > Self::default() && rhs > Self::default() && self > std::$t::MAX - rhs;
+                    let overflow = self > Self::default() && rhs > Self::default() && self > core::$t::MAX - rhs;
 
                     // for an underflow: a + b < min: overflow can not happen and both values must be negative and a < min - b must be satisfied
-                    let underflow = !overflow && self < Self::default() && rhs < Self::default() && self < std::$t::MIN - rhs;
+                    let underflow = !overflow && self < Self::default() && rhs < Self::default() && self < core::$t::MIN - rhs;
 
                     (self + rhs, overflow || underflow)
                 }

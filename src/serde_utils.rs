@@ -1,7 +1,8 @@
+use crate::collections::Vec;
+use core::fmt;
+use core::marker::PhantomData;
 use serde::de::{Deserialize, Error, SeqAccess, Visitor};
 use serde::ser::{Serialize, SerializeSeq, Serializer};
-use std::fmt;
-use std::marker::PhantomData;
 
 /// Map to serializeable representation
 pub trait IntoSerializable {

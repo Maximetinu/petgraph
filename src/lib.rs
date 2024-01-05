@@ -104,6 +104,7 @@
 //!   Defaults on. Enables [`MatrixGraph`](./matrix_graph/struct.MatrixGraph.html).
 //!
 #![doc(html_root_url = "https://docs.rs/petgraph/0.4/")]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 extern crate fixedbitset;
 #[cfg(feature = "graphmap")]
@@ -117,6 +118,12 @@ extern crate serde_derive;
 
 #[cfg(all(feature = "serde-1", test))]
 extern crate itertools;
+
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+
+#[cfg(not(feature = "std"))]
+extern crate ahash;
 
 #[doc(no_inline)]
 pub use crate::graph::Graph;
@@ -135,6 +142,7 @@ pub mod data;
 
 pub mod adj;
 pub mod algo;
+pub mod collections;
 pub mod csr;
 pub mod dot;
 #[cfg(feature = "generate")]

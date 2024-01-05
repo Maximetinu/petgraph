@@ -1,8 +1,8 @@
 #![cfg(feature = "graphmap")]
 extern crate petgraph;
 
-use std::collections::HashSet;
-use std::fmt;
+use core::fmt;
+use petgraph::collections::HashSet;
 
 use petgraph::prelude::*;
 use petgraph::visit::Walker;

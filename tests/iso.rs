@@ -1,6 +1,6 @@
 extern crate petgraph;
 
-use std::collections::HashSet;
+use petgraph::collections::HashSet;
 use std::fs::File;
 use std::io::prelude::*;
 

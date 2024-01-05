@@ -1,6 +1,7 @@
-use std::collections::HashMap;
+use crate::collections::vec;
+use crate::collections::HashMap;
 
-use std::hash::Hash;
+use core::hash::Hash;
 
 use crate::algo::{BoundedMeasure, NegativeCycle};
 use crate::visit::{

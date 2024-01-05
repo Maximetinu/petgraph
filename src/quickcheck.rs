@@ -6,6 +6,7 @@ use crate::graph::{node_index, IndexType};
 use crate::stable_graph::StableGraph;
 use crate::{EdgeType, Graph};
 
+use crate::collections::Vec;
 #[cfg(feature = "graphmap")]
 use crate::graphmap::{GraphMap, NodeTrait};
 use crate::visit::NodeIndexable;

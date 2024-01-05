@@ -1,7 +1,7 @@
 extern crate petgraph;
 
-use std::collections::HashSet;
-use std::hash::Hash;
+use core::hash::Hash;
+use petgraph::collections::HashSet;
 
 use petgraph::prelude::*;
 use petgraph::EdgeType;
